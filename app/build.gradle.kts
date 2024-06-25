@@ -4,17 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.hoshipwd"
+    namespace = "com.hoshi.pwd"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.hoshipwd"
+        applicationId = "com.hoshi.pwd"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -61,4 +59,11 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.0")
     implementation("androidx.compose.material3:material3-android:1.2.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
+
+    implementation("androidx.startup:startup-runtime:1.1.1") // 统一处理初始化
+
+    // 其他好用的第三方库
+    // implementation("com.github.li-xiaojun:XPopup:2.9.19")
+    implementation("com.github.getActivity:ToastUtils:10.5")
+    // implementation("com.github.getActivity:ShapeView:9.0")
 }

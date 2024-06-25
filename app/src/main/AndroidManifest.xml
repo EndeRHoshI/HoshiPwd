@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HoshiPwd"
         tools:targetApi="31">
+
         <activity
-            android:name="hoshipwd.MainActivity"
+            android:name="com.hoshi.pwd.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.HoshiPwd">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +23,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="com.hoshi.pwd.startup.StartupLibInitializer"
+                android:value="androidx.startup" />
+        </provider>
+
     </application>
 
 </manifest>
