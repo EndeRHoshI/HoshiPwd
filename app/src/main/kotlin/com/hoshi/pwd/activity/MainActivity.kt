@@ -1,7 +1,9 @@
 package com.hoshi.pwd.activity
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.hoshi.core.utils.FileUtils
 import com.hoshi.pwd.R
 import com.hoshi.pwd.database.entities.Password
 import com.hoshi.pwd.extentions.showToast
@@ -45,6 +48,10 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FileUtils.deleteFile(FileUtils.getTempDir()) // 每次打开应用都清除临时文件夹，后续把这个清除直接整合到工具类里面
+        val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            PwdUtils.import(this, uri) { pwdViewModel.queryAll() }
+        }
         setContent {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
@@ -67,7 +74,7 @@ class MainActivity : BaseActivity() {
                                         .show()
 
                                     1 -> PwdUtils.export()
-                                    2 -> PwdUtils.import()
+                                    2 -> filePickerLauncher.launch("*/*")
                                 }
                             }.show()
                     }

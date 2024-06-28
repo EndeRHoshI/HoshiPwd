@@ -16,10 +16,10 @@ object PasswordLocalSource {
 
     suspend fun insert(password: Password) = passwordDao.insert(password)
 
+    suspend fun insert(passwordList: List<Password>) = passwordDao.insert(passwordList)
+
     suspend fun delete(password: Password) = passwordDao.delete(password)
 
     suspend fun deleteAll() = passwordDao.deleteAll()
-
-    suspend fun isEmpty() = queryAll().isEmpty()
 
 }

@@ -7,11 +7,13 @@ import com.google.gson.annotations.Expose
 /**
  * 密码实体类
  * Created by lv.qx on 2024/6/25
+ *
+ * id 和分类这两个字段不需要参与序列化，因为平时直接修改文档时，不需要手动写 id，而分类会写在第二级里面，不需要重复写了
  */
 @Entity(tableName = Password.TABLE_NAME)
 data class Password(
     @PrimaryKey(autoGenerate = true) val id: Int = 0, // 数据库自增 id
-    @Expose val category: String, // 类别
+    var category: String, // 分类
     @Expose val platform: String, // 平台
     @Expose val account: String, // 账号
     @Expose val password: String, // 密码
