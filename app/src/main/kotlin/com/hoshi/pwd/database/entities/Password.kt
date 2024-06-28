@@ -2,6 +2,7 @@ package com.hoshi.pwd.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
 
 /**
  * 密码实体类
@@ -9,11 +10,11 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = Password.TABLE_NAME)
 data class Password(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val category: String, // 类别
-    val platform: String, // 平台
-    val account: String, // 账号
-    val password: String, // 密码
+    @PrimaryKey(autoGenerate = true) val id: Int = 0, // 数据库自增 id
+    @Expose val category: String, // 类别
+    @Expose val platform: String, // 平台
+    @Expose val account: String, // 账号
+    @Expose val password: String, // 密码
 ) {
 
     companion object {

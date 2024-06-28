@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.hoshi.pwd.R
 import com.hoshi.pwd.database.entities.Password
 import com.hoshi.pwd.extentions.showToast
+import com.hoshi.pwd.utils.PwdUtils
 import com.hoshi.pwd.viewmodel.PasswordViewModel
 import com.hoshi.pwd.widget.EditText
 import com.hoshi.pwd.widget.EmptyPage
@@ -65,8 +66,8 @@ class MainActivity : BaseActivity() {
                                         }
                                         .show()
 
-                                    1 -> {}
-                                    2 -> {}
+                                    1 -> PwdUtils.export()
+                                    2 -> PwdUtils.import()
                                 }
                             }.show()
                     }
