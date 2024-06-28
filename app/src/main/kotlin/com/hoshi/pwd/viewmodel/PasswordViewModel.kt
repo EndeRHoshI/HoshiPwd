@@ -11,6 +11,7 @@ import com.hoshi.pwd.database.entities.Password
 class PasswordViewModel : BaseViewModel() {
 
     val list = mutableStateOf<List<Password>>(listOf())
+    val showingDialog = mutableStateOf(false)
 
     fun queryAll() {
         launchIO { queryAllInner() }
@@ -23,9 +24,9 @@ class PasswordViewModel : BaseViewModel() {
         list.value = result
     }
 
-    fun insert() {
+    fun insert(password: Password) {
         launchIO {
-            PasswordRepository.insert(Password(category = "生活", platform = "hahaha", account = "hoshi", password = "123456"))
+            PasswordRepository.insert(password)
             queryAllInner()
         }
     }

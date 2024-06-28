@@ -3,7 +3,7 @@ package com.hoshi.pwd.data
 import com.hoshi.pwd.database.entities.Password
 
 /**
- * Created by 0280 on 2024/6/25
+ * Created by lv.qx on 2024/6/25
  */
 object PasswordRepository {
 
