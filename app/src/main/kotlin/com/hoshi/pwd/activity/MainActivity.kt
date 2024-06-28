@@ -36,6 +36,7 @@ import com.hoshi.pwd.viewmodel.PasswordViewModel
 import com.hoshi.pwd.widget.EditText
 import com.hoshi.pwd.widget.EmptyPage
 import com.hoshi.pwd.widget.PasswordItem
+import com.lxj.xpopup.XPopup
 
 class MainActivity : BaseActivity() {
 
@@ -48,7 +49,26 @@ class MainActivity : BaseActivity() {
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
                     TopBar {
-                        pwdViewModel.deleteAll()
+                        XPopup.Builder(this)
+                            .asBottomList(
+                                "",
+                                arrayOf("删除所有记录", "导出记录", "导入记录"),
+                                intArrayOf()
+                            ) { position, _ ->
+                                when (position) {
+                                    0 -> XPopup.Builder(this)
+                                        .asConfirm(
+                                            "删除所有记录",
+                                            "将会删除所有的密码数据，确认删除吗？"
+                                        ) {
+                                            pwdViewModel.deleteAll()
+                                        }
+                                        .show()
+
+                                    1 -> {}
+                                    2 -> {}
+                                }
+                            }.show()
                     }
                 },
                 floatingActionButton = {
