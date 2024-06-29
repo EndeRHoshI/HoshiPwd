@@ -29,6 +29,10 @@ object PwdUtils {
     fun export() {
         MainScope().launch {
             val dataList = PasswordRepository.queryAll()
+            if (dataList.isEmpty()) {
+                showToast("暂时还没有密码记录，无法导出")
+                return@launch
+            }
             val dataGroup = dataList.groupBy { it.category }
             val txtPath = FileUtils.getTempDir() + "password.json"
             val txtFile = File(txtPath)

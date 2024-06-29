@@ -38,4 +38,11 @@ class PasswordViewModel : BaseViewModel() {
         }
     }
 
+    fun delete(password: Password) {
+        launchIO {
+            PasswordRepository.delete(password)
+            queryAllInner()
+        }
+    }
+
 }

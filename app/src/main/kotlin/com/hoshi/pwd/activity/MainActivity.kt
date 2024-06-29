@@ -30,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.hoshi.core.utils.FileUtils
 import com.hoshi.pwd.R
@@ -117,7 +118,7 @@ class MainActivity : BaseActivity() {
                     tint = Color.White
                 )
             },
-            backgroundColor = Color.Blue,
+            backgroundColor = colorResource(id = android.R.color.holo_blue_bright),
             elevation = 12.dp
         )
     }
@@ -218,7 +219,18 @@ class MainActivity : BaseActivity() {
         ) {
             pwdViewModel.list.value.forEach {
                 item {
-                    PasswordItem(it)
+                    PasswordItem(it, {
+
+                    }, {
+                        XPopup.Builder(this@MainActivity)
+                            .isDestroyOnDismiss(true)
+                            .isViewMode(true)
+                            .asConfirm(
+                                "删除密码",
+                                "是否确认删除该密码？平台为 ${it.platform}，账号为 ${it.account}"
+                            ) { pwdViewModel.delete(it) }
+                            .show()
+                    })
                 }
             }
         }
