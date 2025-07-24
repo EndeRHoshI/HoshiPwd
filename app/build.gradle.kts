@@ -41,7 +41,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10" // 对应 kotlin 版本 1.9.22
+        kotlinCompilerExtensionVersion = "1.5.8" // 对应 kotlin 版本 1.9.22
     }
 }
 
@@ -71,8 +71,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
 
     // 其他好用的第三方库
-    implementation("com.github.EndeRHoshI:HoshiCore:0.0.8") // Hoshi 核心
+    implementation("com.github.EndeRHoshI:HoshiCore:1.0.1") // Hoshi 核心
     implementation("com.github.li-xiaojun:XPopup:2.9.19")
     implementation("com.github.getActivity:ToastUtils:10.5")
-    // implementation("com.github.getActivity:ShapeView:9.0")
 }

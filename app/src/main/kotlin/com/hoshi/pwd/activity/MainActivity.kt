@@ -220,7 +220,7 @@ class MainActivity : BaseActivity() {
             pwdViewModel.list.value.forEach {
                 item {
                     PasswordItem(it, {
-
+                        showToast("点击了，准备修改")
                     }, {
                         XPopup.Builder(this@MainActivity)
                             .isDestroyOnDismiss(true)

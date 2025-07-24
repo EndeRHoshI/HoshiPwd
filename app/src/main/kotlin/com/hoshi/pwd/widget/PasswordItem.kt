@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.sharp.Favorite
+import androidx.compose.material.icons.sharp.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.hoshi.core.extentions.matchTrue
 import com.hoshi.pwd.database.entities.Password
 import com.hoshi.pwd.extentions.getPwdDisplay
 
@@ -44,7 +46,7 @@ fun PasswordItem(password: Password, updateAction: (Password) -> Unit, deleteAct
                 bottom.linkTo(tAccount.top)
                 start.linkTo(parent.start, margin = 12.dp)
             },
-            text = password.platform,
+            text = "平台：${password.platform}",
             color = textColor,
             fontSize = 16.sp
         )
@@ -54,7 +56,8 @@ fun PasswordItem(password: Password, updateAction: (Password) -> Unit, deleteAct
                 bottom.linkTo(tPassword.top)
                 start.linkTo(tPlatform.start)
             },
-            text = password.account, color = textColor
+            text = "账号：${password.account}",
+            color = textColor
         )
         Text(
             modifier = Modifier.constrainAs(tPassword) {
@@ -62,11 +65,11 @@ fun PasswordItem(password: Password, updateAction: (Password) -> Unit, deleteAct
                 bottom.linkTo(parent.bottom, 12.dp)
                 start.linkTo(tPlatform.start)
             },
-            text = if (showPwd.value) password.password else password.password.getPwdDisplay(),
+            text = "密码：${showPwd.value.matchTrue(password.password, password.password.getPwdDisplay())}",
             color = textColor
         )
         Icon(
-            Icons.Filled.Lock,
+            showPwd.value.matchTrue(Icons.Sharp.Favorite, Icons.Sharp.FavoriteBorder),
             contentDescription = "",
             Modifier
                 .constrainAs(iVisible) {
