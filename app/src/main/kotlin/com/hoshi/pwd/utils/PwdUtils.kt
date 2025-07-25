@@ -49,7 +49,7 @@ object PwdUtils {
 
     fun import(context: Context, uri: Uri?, successAction: () -> Unit = {}) {
         if (uri == null) {
-            showToast("uri 为空，请检查调用")
+            HLog.d("导入记录时，uri 为空，请检查调用")
         } else {
             val stringBuilder = StringBuilder()
             context.contentResolver.openInputStream(uri).use {

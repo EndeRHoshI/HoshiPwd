@@ -72,6 +72,5 @@ dependencies {
 
     // 其他好用的第三方库
     implementation("com.github.EndeRHoshI:HoshiCore:1.0.1") // Hoshi 核心
-    implementation("com.github.li-xiaojun:XPopup:2.9.19")
     implementation("com.github.getActivity:ToastUtils:10.5")
 }
