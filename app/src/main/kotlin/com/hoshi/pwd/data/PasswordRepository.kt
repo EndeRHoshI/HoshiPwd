@@ -13,6 +13,8 @@ object PasswordRepository {
 
     suspend fun insert(passwordList: List<Password>) = PasswordLocalSource.insert(passwordList)
 
+    suspend fun update(password: Password) = PasswordLocalSource.update(password)
+
     suspend fun delete(password: Password) = PasswordLocalSource.delete(password)
 
     suspend fun deleteAll() = PasswordLocalSource.deleteAll()

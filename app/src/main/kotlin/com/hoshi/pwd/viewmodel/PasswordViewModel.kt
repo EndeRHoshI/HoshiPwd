@@ -11,22 +11,43 @@ import com.hoshi.pwd.database.entities.Password
 class PasswordViewModel : BaseViewModel() {
 
     val list = mutableStateOf<List<Password>>(listOf())
-    val showingDialog = mutableStateOf(false)
+    val categoryFilter = mutableStateOf("")
 
-    fun queryAll() {
-        launchIO { queryAllInner() }
+    /**
+     * 查询所有数据
+     * @param categoryFilter 分类过滤
+     */
+    fun queryAll(categoryFilter: String = "") {
+        this.categoryFilter.value = categoryFilter
+        launchIO { queryAllInner(categoryFilter) }
     }
 
-    private suspend fun queryAllInner() {
-        val result = PasswordRepository.queryAll()
+    private suspend fun queryAllInner(categoryFilter: String = "") {
+        var result = PasswordRepository.queryAll()
+        if (categoryFilter.isNotEmpty() && categoryFilter != "全部") {
+            result = result.filter { it.category == categoryFilter }
+        }
         val listSize = result.size
-        HLog.d("查询到密码的数量为 $listSize 条")
+        val sb = StringBuilder()
+        if (categoryFilter.isNotEmpty()) {
+            sb.append("过滤对应分类：$categoryFilter，")
+        }
+        sb.append("查询到密码的数量为 $listSize 条")
+        HLog.d(sb.toString())
         list.value = result
     }
 
     fun insert(password: Password) {
         launchIO {
             PasswordRepository.insert(password)
+            queryAllInner()
+        }
+    }
+
+    fun update(password: Password) {
+        launchIO {
+            HLog.d("更新了密码，更新后为：$password")
+            PasswordRepository.update(password)
             queryAllInner()
         }
     }

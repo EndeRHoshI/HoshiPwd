@@ -35,40 +35,42 @@ fun ConfirmDialog(
     cancelAction: () -> Unit = {},
     confirmAction: () -> Unit = {}
 ) {
-    Dialog(
-        onDismissRequest = { visible.value = false },
-        properties = DialogProperties(dismissOnBackPress = cancelAble, dismissOnClickOutside = cancelAble),
-        content = {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White, RoundedCornerShape(size = 6.dp)),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = title, Modifier.padding(0.dp, 18.dp), fontSize = 20.sp)
-                    Text(text = content, Modifier.padding(22.dp, 0.dp), fontSize = 16.sp)
-                    Spacer(modifier = Modifier.height(18.dp))
-                    Row {
-                        if (cancelVisible) {
+    if (visible.value) {
+        Dialog(
+            onDismissRequest = { visible.value = false },
+            properties = DialogProperties(dismissOnBackPress = cancelAble, dismissOnClickOutside = cancelAble),
+            content = {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White, RoundedCornerShape(size = 6.dp)),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = title, Modifier.padding(0.dp, 18.dp), fontSize = 20.sp)
+                        Text(text = content, Modifier.padding(22.dp, 0.dp), fontSize = 16.sp)
+                        Spacer(modifier = Modifier.height(18.dp))
+                        Row {
+                            if (cancelVisible) {
+                                Button(onClick = {
+                                    visible.value = false
+                                    cancelAction.invoke()
+                                }) {
+                                    Text(text = "取消")
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(22.dp))
                             Button(onClick = {
                                 visible.value = false
-                                cancelAction.invoke()
+                                confirmAction.invoke()
                             }) {
-                                Text(text = "取消")
+                                Text(text = "确认")
                             }
                         }
-                        Spacer(modifier = Modifier.width(22.dp))
-                        Button(onClick = {
-                            visible.value = false
-                            confirmAction.invoke()
-                        }) {
-                            Text(text = "确认")
-                        }
+                        Spacer(modifier = Modifier.height(18.dp))
                     }
-                    Spacer(modifier = Modifier.height(18.dp))
                 }
             }
-        }
-    )
+        )
+    }
 }

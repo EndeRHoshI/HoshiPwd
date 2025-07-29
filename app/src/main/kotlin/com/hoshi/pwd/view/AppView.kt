@@ -26,9 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import com.hoshi.core.utils.HLog
 import com.hoshi.pwd.R
 import com.hoshi.pwd.database.entities.Password
-import com.hoshi.pwd.extentions.showToast
 import com.hoshi.pwd.viewmodel.PasswordViewModel
 import com.hoshi.pwd.widget.EmptyPage
 import com.hoshi.pwd.widget.PasswordItem
@@ -82,20 +82,16 @@ fun AppView(
         PageContent(editDialogVisible, pwdViewModel, paddingValue = innerPadding)
     }
 
-    if (deleteAllDialogVisible.value) {
-        ConfirmDialog(
-            deleteAllDialogVisible,
-            "删除所有记录",
-            "将会删除所有的密码数据，确认删除吗？",
-            confirmAction = {
-                pwdViewModel.deleteAll()
-            }
-        )
-    }
+    ConfirmDialog(
+        deleteAllDialogVisible,
+        "删除所有记录",
+        "将会删除所有的密码数据，确认删除吗？",
+        confirmAction = {
+            pwdViewModel.deleteAll()
+        }
+    )
 
-    if (moreDialogVisible.value) {
-        MoreDialog(moreDialogVisible, deleteAllDialogVisible, pwdViewModel, filePickerLauncher)
-    }
+    MoreDialog(moreDialogVisible, deleteAllDialogVisible, pwdViewModel, filePickerLauncher)
 }
 
 @Composable
@@ -114,8 +110,10 @@ private fun PageContent(
 
 @Composable
 fun PwdListPage(pwdViewModel: PasswordViewModel, paddingValue: PaddingValues) {
-    val deletePasswordDialogVisible = remember { mutableStateOf(false) }
-    val deletePassword = remember { mutableStateOf<Password?>(null) }
+    val deletePasswordDialogVisible = remember { mutableStateOf(false) } // 删除密码弹窗是否可见
+    val deletePassword = remember { mutableStateOf<Password?>(null) } // 删除密码时，对应的密码条目
+    val editDialogVisible = remember { mutableStateOf(false) } // 编辑密码弹窗是否可见
+    val editPassword = remember { mutableStateOf<Password?>(null) } // 编辑密码时，对应的密码条目
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -124,7 +122,9 @@ fun PwdListPage(pwdViewModel: PasswordViewModel, paddingValue: PaddingValues) {
         pwdViewModel.list.value.forEach {
             item {
                 PasswordItem(it, {
-                    showToast("点击了，准备修改")
+                    editPassword.value = it
+                    editDialogVisible.value = true
+                    HLog.d("打开了编辑页面，编辑密码：$it")
                 }, {
                     deletePassword.value = it
                     deletePasswordDialogVisible.value = true
@@ -132,14 +132,13 @@ fun PwdListPage(pwdViewModel: PasswordViewModel, paddingValue: PaddingValues) {
             }
         }
     }
-    if (deletePasswordDialogVisible.value) {
-        ConfirmDialog(
-            deletePasswordDialogVisible,
-            "删除密码",
-            "是否确认删除该密码？平台为 ${deletePassword.value?.platform}，账号为 ${deletePassword.value?.account}",
-            confirmAction = {
-                deletePassword.value?.let { pwdViewModel.delete(it) }
-            }
-        )
-    }
+    ConfirmDialog(
+        deletePasswordDialogVisible,
+        "删除密码",
+        "是否确认删除该密码？平台为 ${deletePassword.value?.platform}，账号为 ${deletePassword.value?.account}",
+        confirmAction = {
+            deletePassword.value?.let { pwdViewModel.delete(it) }
+        }
+    )
+    EditDialog(editDialogVisible, editPassword) { password -> pwdViewModel.update(password) }
 }

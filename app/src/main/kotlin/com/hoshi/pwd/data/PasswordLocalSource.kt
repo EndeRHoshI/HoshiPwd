@@ -14,6 +14,8 @@ object PasswordLocalSource {
     // 方法调用
     suspend fun queryAll() = passwordDao.queryAll()
 
+    suspend fun update(password: Password) = passwordDao.update(password)
+
     suspend fun insert(password: Password) = passwordDao.insert(password)
 
     suspend fun insert(passwordList: List<Password>) = passwordDao.insert(passwordList)

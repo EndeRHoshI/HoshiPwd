@@ -4,7 +4,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -28,32 +31,41 @@ fun MoreDialog(
     pwdViewModel: PasswordViewModel,
     filePickerLauncher: ActivityResultLauncher<String>
 ) {
-    Dialog(
-        onDismissRequest = { visible.value = false },
-        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
-        content = {
-            Box(modifier = Modifier.fillMaxWidth().background(Color.White, RoundedCornerShape(size = 6.dp))) {
-                Column {
-                    Button(onClick = {
-                        visible.value = false
-                        deleteAllDialogVisible.value = true
-                    }) {
-                        Text(text = "删除所有记录")
-                    }
-                    Button(onClick = {
-                        visible.value = false
-                        PwdUtils.export()
-                    }) {
-                        Text(text = "导出记录")
-                    }
-                    Button(onClick = {
-                        visible.value = false
-                        filePickerLauncher.launch("*/*")
-                    }) {
-                        Text(text = "导入记录")
+    if (visible.value) {
+        Dialog(
+            onDismissRequest = { visible.value = false },
+            properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
+            content = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White, RoundedCornerShape(size = 6.dp))
+                        .padding(12.dp)
+                ) {
+                    Column {
+                        Button(onClick = {
+                            visible.value = false
+                            deleteAllDialogVisible.value = true
+                        }) {
+                            Text(text = "删除所有记录")
+                        }
+                        Button(onClick = {
+                            visible.value = false
+                            PwdUtils.export()
+                        }) {
+                            Text(text = "导出记录")
+                        }
+                        Button(onClick = {
+                            visible.value = false
+                            filePickerLauncher.launch("*/*")
+                        }) {
+                            Text(text = "导入记录")
+                        }
+                        Spacer(Modifier.height(10.dp))
+                        CategoryView(pwdViewModel.categoryFilter.value, true) { category -> pwdViewModel.queryAll(category) }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }

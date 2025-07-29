@@ -12,11 +12,11 @@ import com.google.gson.annotations.Expose
  */
 @Entity(tableName = Password.TABLE_NAME)
 data class Password(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0, // 数据库自增 id
+    @PrimaryKey(autoGenerate = true) val id: Long = 0, // 数据库自增 id
     var category: String, // 分类
-    @Expose val platform: String, // 平台
-    @Expose val account: String, // 账号
-    @Expose val password: String, // 密码
+    @Expose var platform: String, // 平台
+    @Expose var account: String, // 账号
+    @Expose var password: String, // 密码
 ) {
 
     companion object {
