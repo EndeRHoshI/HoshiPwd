@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
@@ -51,7 +51,7 @@ fun CustomTextField(
                 text.value = str // 改变一下当前文本
                 onTextChange.invoke(str) // 回调给外部
             },
-            cursorBrush = SolidColor(colorResource(id = android.R.color.holo_blue_bright)), // 设置指针颜色
+            cursorBrush = SolidColor(Color.Black), // 设置指针颜色
             singleLine = true, // 单行
             modifier = Modifier
                 .weight(1f)

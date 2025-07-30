@@ -40,7 +40,7 @@ fun CategoryView(
                 it,
                 modifier = Modifier
                     .padding(6.dp, 0.dp)
-                    .background(isSelected.matchTrue(colorResource(android.R.color.holo_blue_bright), Color.Gray))
+                    .background(isSelected.matchTrue(Color.Black, Color.Gray))
                     .padding(12.dp, 6.dp)
                     .clickable {
                         currentState = it

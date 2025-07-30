@@ -30,7 +30,7 @@ fun EditDialog(
     currentPassword: MutableState<Password?> = mutableStateOf(null),
     savePasswordAction: (Password) -> Unit
 ) {
-    val isCreate by remember { mutableStateOf(currentPassword.value == null) } // 去一下是否新建密码
+    val isCreate = remember { mutableStateOf(currentPassword.value == null) } // 取一下是否新建密码
 
     /**
      * 隐藏弹窗并且清空数据
@@ -43,7 +43,7 @@ fun EditDialog(
     if (visible.value) {
         AlertDialog(
             onDismissRequest = { dismissAndClear() },
-            title = { Text(text = "${isCreate.matchTrue("新建", "编辑")}密码") },
+            title = { Text(text = "${isCreate.value.matchTrue("新建", "编辑")}密码") }, // TODO 这里有 bug，不能正确区分，后续看看
             text = {
                 Column {
                     Text(text = "输入对应的分类、平台、账号、密码")

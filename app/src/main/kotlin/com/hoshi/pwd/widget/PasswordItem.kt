@@ -36,7 +36,7 @@ fun PasswordItem(password: Password, liteMode: Boolean = false, updateAction: (P
             .padding(12.dp)
             .fillMaxWidth()
             // .border(width = 1.dp, color = Color.Red, shape = RoundedCornerShape(6.dp)) // 这个是线框
-            .background(color = colorResource(id = android.R.color.holo_blue_bright), shape = RoundedCornerShape(6.dp))
+            .background(color = Color.Black, shape = RoundedCornerShape(6.dp))
             .clickable { updateAction.invoke(password) }
     ) {
         val (tPlatform, tAccount, tPassword, iVisible, iDelete) = createRefs()

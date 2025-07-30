@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,7 +55,7 @@ fun AppView(
     val moreDialogVisible = remember { mutableStateOf(false) }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().statusBarsPadding(),
         topBar = {
             TopAppBar(
                 title = {
@@ -75,7 +76,7 @@ fun AppView(
                                 modifier = Modifier.padding(start = 6.dp),
                                 imageVector = Icons.Default.Search,
                                 contentDescription = "Search",
-                                tint = colorResource(id = android.R.color.holo_blue_bright)
+                                tint = Color.Black
                             )
                         },
                         trailingIcon = {
@@ -89,11 +90,11 @@ fun AppView(
                                         },
                                     imageVector = Icons.Default.Clear,
                                     contentDescription = "Clear",
-                                    tint = colorResource(id = android.R.color.holo_blue_bright)
+                                    tint = Color.Black
                                 )
                             }
                         },
-                        textFieldStyle = TextStyle.Default.copy(color = colorResource(id = android.R.color.holo_blue_bright))
+                        textFieldStyle = TextStyle.Default.copy(color = Color.Black)
                     )
                     Icon(
                         imageVector = Icons.Default.MoreVert,
@@ -104,7 +105,7 @@ fun AppView(
                         tint = Color.White
                     )
                 },
-                backgroundColor = colorResource(id = android.R.color.holo_blue_bright),
+                backgroundColor = Color.Black,
                 elevation = 12.dp
             )
         },

@@ -26,7 +26,7 @@ class PasswordViewModel : BaseViewModel() {
     }
 
     private suspend fun queryAllInner(categoryFilter: String = "", contentFilter: String = "") {
-        var result = PasswordRepository.queryAll().reversed() // 倒序排列一下
+        var result = PasswordRepository.queryAll()
         if (categoryFilter.isNotEmpty() && categoryFilter != "全部") {
             result = result.filter { it.category == categoryFilter }
         }
