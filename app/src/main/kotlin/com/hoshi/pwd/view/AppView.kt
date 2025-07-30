@@ -164,7 +164,7 @@ fun PwdListPage(pwdViewModel: PasswordViewModel, paddingValue: PaddingValues) {
     ) {
         pwdViewModel.list.value.forEach {
             item {
-                PasswordItem(it, {
+                PasswordItem(it, pwdViewModel.liteMode.value, {
                     editPassword.value = it
                     editDialogVisible.value = true
                     HLog.d("打开了编辑页面，编辑密码：$it")

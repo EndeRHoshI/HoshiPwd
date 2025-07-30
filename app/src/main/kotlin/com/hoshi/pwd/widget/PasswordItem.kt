@@ -28,10 +28,10 @@ import com.hoshi.pwd.extentions.getPwdDisplay
  * Created by lv.qx on 2024/6/28
  */
 @Composable
-fun PasswordItem(password: Password, updateAction: (Password) -> Unit, deleteAction: (Password) -> Unit) {
+fun PasswordItem(password: Password, liteMode: Boolean = false, updateAction: (Password) -> Unit, deleteAction: (Password) -> Unit) {
     val showPwd = remember { mutableStateOf(false) }
     val textColor = Color.White
-    ConstraintLayout(
+    ConstraintLayout( // TODO 改下这个布局，不要硬用 CL 了
         modifier = Modifier
             .padding(12.dp)
             .fillMaxWidth()
@@ -50,44 +50,46 @@ fun PasswordItem(password: Password, updateAction: (Password) -> Unit, deleteAct
             color = textColor,
             fontSize = 16.sp
         )
-        Text(
-            modifier = Modifier.constrainAs(tAccount) {
-                top.linkTo(tPlatform.bottom, margin = 6.dp)
-                bottom.linkTo(tPassword.top)
-                start.linkTo(tPlatform.start)
-            },
-            text = "账号：${password.account}",
-            color = textColor
-        )
-        Text(
-            modifier = Modifier.constrainAs(tPassword) {
-                top.linkTo(tAccount.bottom, margin = 6.dp)
-                bottom.linkTo(parent.bottom, 12.dp)
-                start.linkTo(tPlatform.start)
-            },
-            text = "密码：${showPwd.value.matchTrue(password.password, password.password.getPwdDisplay())}",
-            color = textColor
-        )
-        Icon(
-            showPwd.value.matchTrue(Icons.Sharp.Favorite, Icons.Sharp.FavoriteBorder),
-            contentDescription = "",
-            Modifier
-                .constrainAs(iVisible) {
-                    top.linkTo(tPassword.top)
-                    bottom.linkTo(tPassword.bottom)
-                    end.linkTo(parent.end, margin = 12.dp)
-                }
-                .clickable { showPwd.value = !showPwd.value }
-        )
-        Icon(
-            Icons.Filled.Delete,
-            contentDescription = "",
-            Modifier
-                .constrainAs(iDelete) {
-                    top.linkTo(parent.top, margin = 12.dp)
-                    end.linkTo(parent.end, margin = 12.dp)
-                }
-                .clickable { deleteAction.invoke(password) }
-        )
+        if (!liteMode) {
+            Text(
+                modifier = Modifier.constrainAs(tAccount) {
+                    top.linkTo(tPlatform.bottom, margin = 6.dp)
+                    bottom.linkTo(tPassword.top)
+                    start.linkTo(tPlatform.start)
+                },
+                text = "账号：${password.account}",
+                color = textColor
+            )
+            Text(
+                modifier = Modifier.constrainAs(tPassword) {
+                    top.linkTo(tAccount.bottom, margin = 6.dp)
+                    bottom.linkTo(parent.bottom, 12.dp)
+                    start.linkTo(tPlatform.start)
+                },
+                text = "密码：${showPwd.value.matchTrue(password.password, password.password.getPwdDisplay())}",
+                color = textColor
+            )
+            Icon(
+                showPwd.value.matchTrue(Icons.Sharp.Favorite, Icons.Sharp.FavoriteBorder),
+                contentDescription = "",
+                Modifier
+                    .constrainAs(iVisible) {
+                        top.linkTo(tPassword.top)
+                        bottom.linkTo(tPassword.bottom)
+                        end.linkTo(parent.end, margin = 12.dp)
+                    }
+                    .clickable { showPwd.value = !showPwd.value }
+            )
+            Icon(
+                Icons.Filled.Delete,
+                contentDescription = "",
+                Modifier
+                    .constrainAs(iDelete) {
+                        top.linkTo(parent.top, margin = 12.dp)
+                        end.linkTo(parent.end, margin = 12.dp)
+                    }
+                    .clickable { deleteAction.invoke(password) }
+            )
+        }
     }
 }

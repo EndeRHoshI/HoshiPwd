@@ -13,6 +13,7 @@ class PasswordViewModel : BaseViewModel() {
     val list = mutableStateOf<List<Password>>(listOf())
     val categoryFilter = mutableStateOf("") // 分类过滤
     val contentFilter = mutableStateOf("") // 内容过滤
+    val liteMode = mutableStateOf(false) // 精简模式
 
     /**
      * 查询所有数据
