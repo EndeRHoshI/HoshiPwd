@@ -1,10 +1,13 @@
 package com.hoshi.pwd.view
 
 import androidx.activity.result.ActivityResultLauncher
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -12,7 +15,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -25,11 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.hoshi.core.utils.HLog
 import com.hoshi.pwd.R
 import com.hoshi.pwd.database.entities.Password
 import com.hoshi.pwd.viewmodel.PasswordViewModel
+import com.hoshi.pwd.widget.CustomTextField
 import com.hoshi.pwd.widget.EmptyPage
 import com.hoshi.pwd.widget.PasswordItem
 
@@ -54,10 +61,46 @@ fun AppView(
                     Text(text = context.getString(R.string.app_name), color = Color.White)
                 },
                 actions = {
+                    CustomTextField(
+                        pwdViewModel.contentFilter,
+                        modifier = Modifier
+                            .background(Color.White)
+                            .width(188.dp)
+                            .height(30.dp),
+                        onTextChange = {
+                            pwdViewModel.queryAll(pwdViewModel.categoryFilter.value, it)
+                        },
+                        leadingIcon = {
+                            Icon(
+                                modifier = Modifier.padding(start = 6.dp),
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search",
+                                tint = colorResource(id = android.R.color.holo_blue_bright)
+                            )
+                        },
+                        trailingIcon = {
+                            if (pwdViewModel.contentFilter.value.isNotEmpty()) { // 不为空时，显示清除按钮
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(end = 6.dp)
+                                        .clickable {
+                                            pwdViewModel.contentFilter.value = ""
+                                            pwdViewModel.queryAll(pwdViewModel.categoryFilter.value, "")
+                                        },
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = "Clear",
+                                    tint = colorResource(id = android.R.color.holo_blue_bright)
+                                )
+                            }
+                        },
+                        textFieldStyle = TextStyle.Default.copy(color = colorResource(id = android.R.color.holo_blue_bright))
+                    )
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = "More",
-                        modifier = Modifier.clickable(onClick = { moreDialogVisible.value = true }),
+                        modifier = Modifier
+                            .clickable(onClick = { moreDialogVisible.value = true })
+                            .padding(4.dp, 0.dp),
                         tint = Color.White
                     )
                 },

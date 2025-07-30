@@ -1,7 +1,5 @@
 package com.hoshi.pwd.widget
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
@@ -11,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
@@ -24,8 +21,9 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun EditText(
     text: String,
-    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     labelContent: String = "",
+    onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
     OutlinedTextField(
@@ -38,9 +36,7 @@ fun EditText(
             }
         },
         textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(66.dp),
+        modifier = modifier,
         colors = TextFieldDefaults.textFieldColors( // 背景色、下划线颜色和 label 颜色在这里设置
             backgroundColor = Color.Transparent,
             focusedIndicatorColor = Color.Black,

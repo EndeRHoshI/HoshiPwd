@@ -50,11 +50,20 @@ fun EditDialog(
                     Spacer(modifier = Modifier.height(10.dp))
                     CategoryView(currentPassword.value?.category.orEmpty()) { createAndUpdatePwd(currentPassword, newCategory = it) }
                     Spacer(modifier = Modifier.height(6.dp))
-                    EditText(currentPassword.value?.platform.orEmpty(), { createAndUpdatePwd(currentPassword, newPlatform = it) }, "平台")
+                    EditText(
+                        currentPassword.value?.platform.orEmpty(),
+                        labelContent = "平台",
+                        onValueChange = { createAndUpdatePwd(currentPassword, newPlatform = it) })
                     Spacer(modifier = Modifier.height(6.dp))
-                    EditText(currentPassword.value?.account.orEmpty(), { createAndUpdatePwd(currentPassword, newAccount = it) }, "账号")
+                    EditText(
+                        currentPassword.value?.account.orEmpty(),
+                        labelContent = "账号",
+                        onValueChange = { createAndUpdatePwd(currentPassword, newAccount = it) })
                     Spacer(modifier = Modifier.height(6.dp))
-                    EditText(currentPassword.value?.password.orEmpty(), { createAndUpdatePwd(currentPassword, newPassword = it) }, "密码")
+                    EditText(
+                        currentPassword.value?.password.orEmpty(),
+                        labelContent = "密码",
+                        onValueChange = { createAndUpdatePwd(currentPassword, newPassword = it) })
                 }
             },
             confirmButton = {
