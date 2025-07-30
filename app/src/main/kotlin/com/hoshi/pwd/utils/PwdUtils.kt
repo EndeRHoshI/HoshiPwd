@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.hoshi.core.utils.FileUtils
 import com.hoshi.core.utils.HLog
+import com.hoshi.core.utils.TimeUtils
 import com.hoshi.pwd.data.PasswordRepository
 import com.hoshi.pwd.database.entities.Password
 import com.hoshi.pwd.extentions.showToast
@@ -14,6 +15,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 
@@ -34,7 +36,8 @@ object PwdUtils {
                 return@launch
             }
             val dataGroup = dataList.groupBy { it.category }
-            val txtPath = FileUtils.getTempDir() + "password.json"
+            val date = TimeUtils.getSimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis())
+            val txtPath = FileUtils.getTempDir() + "password_$date.json"
             val txtFile = File(txtPath)
 
             // 需要过滤字段时，要用这种方式构建 Gson 对象
@@ -45,6 +48,35 @@ object PwdUtils {
             writeToTxt(txtFile, gson.toJson(dataGroup))
             showToast("导出成功，路径为 $txtPath")
         }
+    }
+
+    fun import(jsonPath: String?, successAction: () -> Unit = {}) {
+        if (jsonPath.isNullOrEmpty()) {
+            HLog.d("导入记录时，jsonPath 为空，请检查调用")
+        } else {
+            HLog.d("准备导入记录，jsonPath = $jsonPath")
+            val file = File(jsonPath)
+            if (file.exists()) {
+                val stringBuilder = StringBuilder()
+                FileInputStream(file).use {
+                    BufferedReader(InputStreamReader(it)).use { reader ->
+                        var line: String? = reader.readLine()
+                        while (line != null) {
+                            stringBuilder.append(line)
+                            line = reader.readLine()
+                            if (line != null) {
+                                stringBuilder.append("\n")
+                            }
+                        }
+                    }
+                }
+                val jsonString = stringBuilder.toString()
+                readJsonStr(jsonString, successAction)
+            } else {
+                HLog.d("导入记录时，文件不存在，请检查调用")
+            }
+        }
+
     }
 
     fun import(context: Context, uri: Uri?, successAction: () -> Unit = {}) {
@@ -65,30 +97,37 @@ object PwdUtils {
                 }
             }
             val jsonString = stringBuilder.toString()
-            runCatching {
-                val jsonObject = JsonParser.parseString(jsonString).asJsonObject
-                val pwdList = mutableListOf<Password>()
-                val gson = Gson()
-                jsonObject.keySet().forEach {
-                    val categoryKey = it
-                    val pwdListArray = jsonObject.get(categoryKey).asJsonArray
-                    pwdListArray.forEach { jsonElement ->
-                        val password = gson.fromJson(jsonElement, Password::class.java)
-                        password.category = categoryKey // 把分类填进去一下
-                        pwdList.add(password)
-                    }
+            readJsonStr(jsonString, successAction)
+        }
+    }
+
+    private fun readJsonStr(jsonStr: String?, successAction: () -> Unit = {}) {
+        runCatching {
+            val jsonObject = JsonParser.parseString(jsonStr).asJsonObject
+            val pwdList = mutableListOf<Password>()
+            val gson = Gson()
+            jsonObject.keySet().forEach {
+                val categoryKey = it
+                val pwdListArray = jsonObject.get(categoryKey).asJsonArray
+                pwdListArray.forEach { jsonElement ->
+                    val password = gson.fromJson(jsonElement, Password::class.java)
+                    password.category = categoryKey // 把分类填进去一下
+                    pwdList.add(password)
                 }
-                MainScope().launch {
-                    PasswordRepository.deleteAll() // 因为是全量替换，所以先把所有删除了
-                    PasswordRepository.insert(pwdList)
-                    showToast("导入完毕")
-                    successAction.invoke()
-                }
-            }.onFailure {
-                HLog.e(it)
-                showToast("导入失败")
             }
-            HLog.d(jsonString)
+            MainScope().launch {
+                PasswordRepository.deleteAll() // 因为是全量替换，所以先把所有删除了
+                PasswordRepository.insert(pwdList)
+                val size = pwdList.size
+                val toastStr = "导入完毕，共 $size 条数据"
+                showToast(toastStr)
+                HLog.d(toastStr)
+                successAction.invoke()
+            }
+        }.onFailure {
+            val toastStr = "导入失败，message = ${it.message}"
+            HLog.e(toastStr)
+            showToast(toastStr)
         }
     }
 

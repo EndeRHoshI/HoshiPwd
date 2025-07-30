@@ -24,6 +24,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.hoshi.core.utils.FileUtils
 import com.hoshi.pwd.utils.PwdUtils
 import com.hoshi.pwd.viewmodel.PasswordViewModel
 
@@ -62,8 +63,9 @@ fun MoreDialog(
                             Text(text = "导出记录")
                         }
                         Button(onClick = {
+                            PwdUtils.import(FileUtils.getTempDir() + "password.json") { pwdViewModel.queryAll() }
                             visible.value = false
-                            filePickerLauncher.launch("*/*")
+                            // filePickerLauncher.launch("*/*")
                         }) {
                             Text(text = "导入记录")
                         }
@@ -74,7 +76,11 @@ fun MoreDialog(
                             Modifier
                                 .fillMaxWidth()
                                 .height(56.dp)
-                                .toggleable(value = pwdViewModel.liteMode.value, onValueChange = { pwdViewModel.liteMode.value = it }, role = Role.Checkbox)
+                                .toggleable(
+                                    value = pwdViewModel.liteMode.value,
+                                    onValueChange = { pwdViewModel.liteMode.value = it },
+                                    role = Role.Checkbox
+                                )
                                 .padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically
                         ) {
                             Checkbox(
