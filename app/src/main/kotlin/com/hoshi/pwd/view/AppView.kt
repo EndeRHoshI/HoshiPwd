@@ -3,6 +3,7 @@ package com.hoshi.pwd.view
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -27,10 +28,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.hoshi.core.utils.HLog
@@ -55,7 +56,9 @@ fun AppView(
     val moreDialogVisible = remember { mutableStateOf(false) }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize().statusBarsPadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
         topBar = {
             TopAppBar(
                 title = {
@@ -128,8 +131,8 @@ fun AppView(
 
     ConfirmDialog(
         deleteAllDialogVisible,
-        "删除所有记录",
-        "将会删除所有的密码数据，确认删除吗？",
+        "删除全部",
+        "将会删除全部的密码数据，确认删除吗？",
         confirmAction = {
             pwdViewModel.deleteAll()
         }
@@ -161,18 +164,24 @@ fun PwdListPage(pwdViewModel: PasswordViewModel, paddingValue: PaddingValues) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValue)
+            .padding(paddingValue),
+        contentPadding = PaddingValues(12.dp), // 列表内容的外边距，注意这个不是分割线，而是整个列表控件的外边距
+        verticalArrangement = spacedBy(12.dp, Alignment.CenterVertically), // 第一个参数是分割线高度，第二个参数是父级内部间隔子级的对齐方式，暂时不明用途
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        pwdViewModel.list.value.forEach {
+        pwdViewModel.list.value.forEach { password ->
             item {
-                PasswordItem(it, pwdViewModel.liteMode.value, {
-                    editPassword.value = it
-                    editDialogVisible.value = true
-                    HLog.d("打开了编辑页面，编辑密码：$it")
-                }, {
-                    deletePassword.value = it
-                    deletePasswordDialogVisible.value = true
-                })
+                PasswordItem(
+                    modifier = Modifier,
+                    password,
+                    pwdViewModel.liteMode.value, {
+                        editPassword.value = password
+                        editDialogVisible.value = true
+                        HLog.d("打开了编辑页面，编辑密码：$password")
+                    }, {
+                        deletePassword.value = password
+                        deletePasswordDialogVisible.value = true
+                    })
             }
         }
     }

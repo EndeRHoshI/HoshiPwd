@@ -50,23 +50,29 @@ fun MoreDialog(
                         .padding(12.dp)
                 ) {
                     Column {
-                        Button(onClick = {
-                            visible.value = false
-                            deleteAllDialogVisible.value = true
-                        }) {
-                            Text(text = "删除所有记录")
+                        Button(
+                            onClick = {
+                                visible.value = false
+                                deleteAllDialogVisible.value = true
+                            }
+                        ) {
+                            Text(text = "删除全部")
                         }
-                        Button(onClick = {
-                            visible.value = false
-                            PwdUtils.export()
-                        }) {
+                        Button(
+                            onClick = {
+                                visible.value = false
+                                PwdUtils.export()
+                            }
+                        ) {
                             Text(text = "导出记录")
                         }
-                        Button(onClick = {
-                            PwdUtils.import(FileUtils.getTempDir() + "password.json") { pwdViewModel.queryAll() }
-                            visible.value = false
-                            // filePickerLauncher.launch("*/*")
-                        }) {
+                        Button(
+                            onClick = {
+                                PwdUtils.import(FileUtils.getTempDir() + "password.json") { pwdViewModel.queryAll() }
+                                visible.value = false
+                                // filePickerLauncher.launch("*/*")
+                            }
+                        ) {
                             Text(text = "导入记录")
                         }
                         Spacer(Modifier.height(10.dp))
