@@ -61,13 +61,14 @@ fun MoreDialog(
                         Button(
                             onClick = {
                                 visible.value = false
-                                PwdUtils.export()
+                                PwdUtils.export() // 导出到应用内的 cache/temp 目录下
                             }
                         ) {
                             Text(text = "导出记录")
                         }
                         Button(
                             onClick = {
+                                // 导入时，将上面导出的文件改下名字放到 temp 里面，再点击导入即可
                                 PwdUtils.import(FileUtils.getTempDir() + "password.json") { pwdViewModel.queryAll() }
                                 visible.value = false
                                 // filePickerLauncher.launch("*/*")
