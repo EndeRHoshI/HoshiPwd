@@ -69,6 +69,6 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
 
     // 其他好用的第三方库
-    implementation("com.github.EndeRHoshI:HoshiCore:1.0.1") // Hoshi 核心
+    implementation("com.github.EndeRHoshI:HoshiCore:1.0.3") // Hoshi 核心
     implementation("com.github.getActivity:ToastUtils:10.5")
 }
