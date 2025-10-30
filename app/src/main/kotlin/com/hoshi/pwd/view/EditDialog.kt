@@ -73,7 +73,7 @@ fun EditDialog(
                         val categoryValue = currentPassword.value?.category
                         val platformValue = currentPassword.value?.platform
                         val accountValue = currentPassword.value?.account
-                        val passwordValue = currentPassword.value?.password
+                        val passwordValue = currentPassword.value?.password ?: "" // 密码可以为空
                         if (categoryValue.isNullOrEmpty()) {
                             showToast("请选择分类")
                             return@TextButton
@@ -84,10 +84,6 @@ fun EditDialog(
                         }
                         if (accountValue.isNullOrEmpty()) {
                             showToast("账号不能为空")
-                            return@TextButton
-                        }
-                        if (passwordValue.isNullOrEmpty()) {
-                            showToast("密码不能为空")
                             return@TextButton
                         }
                         savePasswordAction.invoke(
