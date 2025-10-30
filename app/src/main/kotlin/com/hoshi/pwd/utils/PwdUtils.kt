@@ -45,7 +45,7 @@ object PwdUtils {
                 .excludeFieldsWithoutExposeAnnotation()
                 .create()
 
-            writeToTxt(txtFile, gson.toJson(dataGroup))
+            FileUtils.writeToTxt(txtFile, gson.toJson(dataGroup))
             showToast("导出成功，路径为 $txtPath")
         }
     }
@@ -129,16 +129,6 @@ object PwdUtils {
             HLog.e(toastStr)
             showToast(toastStr)
         }
-    }
-
-    /**
-     * 写入到 txt 文件中
-     * 后续可以抽出到工具类中
-     * @param content String 写入内容
-     */
-    private fun writeToTxt(txtFile: File, content: String) {
-        val outputStream = FileOutputStream(txtFile)
-        outputStream.use { it.write(content.toByteArray()) }
     }
 
 }
